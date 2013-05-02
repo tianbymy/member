@@ -22,8 +22,9 @@ gem 'thin'
 gem 'cells'
 gem 'simple_form'
 gem 'rubycas-client'
+gem 'font-awesome-rails'
 gem 'carrierwave-mongoid','~>0.3.0', :require => 'carrierwave/mongoid'
-gem "mongoid"
+gem 'mongoid'
 
 gemfile_local = File.join(File.dirname(__FILE__), 'Gemfile.local')
 
