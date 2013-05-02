@@ -1,0 +1,40 @@
+zh_CN:
+  simple_form:
+    labels:
+      user:
+        old_password: 旧密码
+        sn: 姓
+        cn: 名
+        login: 用户名
+        password: 密码
+        password_confirmation: 确认密码
+        email: 联系邮箱
+        phone: 联系电话
+    hints:
+      user:
+        login: 6位以上英文字母，请勿使用中文
+        password_confirmation: 请输入确认密码
+    placeholders:
+      user:
+        email: 邮箱格式 如:example@163.com
+
+  mongoid:
+    errors:
+      models:
+        user:
+          attributes:
+            email:
+              blank: 必填项
+              invalid: 请填写正确的邮箱格式 如： example@163.com
+              taken: 此邮箱已经被注册了
+            password:
+              blank: 必填项
+              confirmation: 确认密码与密码输入不一致
+            password_confirmation:
+              blank: 必填项
+        article:
+          attributes:
+            name:
+              blank: 名称不能为空
+            content:
+              blank: 附件不能为空

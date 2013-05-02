@@ -1,0 +1,4 @@
+/! 引入消息提示页面
+= render_cell 'messages', :index, :message=>flash[:message]
+/! 引入baseinfo
+= render_cell 'user', :edit, :user=>@user

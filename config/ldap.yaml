@@ -1,0 +1,19 @@
+host: 127.0.0.1 #repos.zhiyisoft.com
+port: 389
+base:
+  base: dc=soatour,dc=org
+  person: ou=people,dc=soatour,dc=org
+attr:
+  - displayName
+  - uid
+  - sn
+  - cn
+  - userPassword
+objectclass:
+  - inetOrgPerson
+  - organizationalPerson
+  - top
+  - person
+bind:
+  dn: cn=admin,dc=soatour,dc=org
+  passwd: ts3qdf

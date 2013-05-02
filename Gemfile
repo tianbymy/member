@@ -1,15 +1,7 @@
-source 'https://rubygems.org'
-
+source 'http://ruby.taobao.org'
 gem 'rails', '3.2.13'
-
-# Bundle edge Rails instead:
-# gem 'rails', :git => 'git://github.com/rails/rails.git'
-
 gem 'sqlite3'
 
-
-# Gems used only for assets and not required
-# in production environments by default.
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'
   gem 'coffee-rails', '~> 3.2.1'
@@ -21,18 +13,24 @@ group :assets do
 end
 
 gem 'jquery-rails'
+gem 'capistrano'
 
-# To use ActiveModel has_secure_password
-# gem 'bcrypt-ruby', '~> 3.0.0'
+gem 'zhiyi-member', :git => 'git@github.com:zhiyisoft/zhiyi-ldap-member.git'
+gem "slim"
+gem 'execjs'
+gem 'thin'
+gem 'cells'
+gem 'simple_form'
+gem 'rubycas-client'
+gem 'carrierwave-mongoid','~>0.3.0', :require => 'carrierwave/mongoid'
+gem "mongoid"
 
-# To use Jbuilder templates for JSON
-# gem 'jbuilder'
+gemfile_local = File.join(File.dirname(__FILE__), 'Gemfile.local')
 
-# Use unicorn as the app server
-# gem 'unicorn'
+if File.readable?(gemfile_local)
+  gem "zhiyi-bootstrap-rails", :require => "bootstrap-rails",:path =>"../zhiyi-bootstrap-rails"
+else
+  gem "zhiyi-bootstrap-rails", :require => "bootstrap-rails", :git => "git@github.com:zhiyisoft/bootstrap-rails.git", :ref => "HEAD"
+end
 
-# Deploy with Capistrano
-# gem 'capistrano'
 
-# To use debugger
-# gem 'debugger'
