@@ -1,17 +1,20 @@
-# -*- coding: utf-8 -*-
-
+# encoding: utf-8
 class UsersController < ApplicationController
   before_filter CASClient::Frameworks::Rails::Filter, except: [:new,:create]
-#  load_and_authorize_resource
+  
+  before_filter :find_user, only: [:create]
 
   def new
     @user = User.new
   end
 
   def create
-    if @user.save
-      flash[:message] = "注册成功!"
-      redirect_to :controller => :dashboard, :action=>:index
+    @user.validate_presence([:login,:sn,:cn,:name,:email,:phone,:password,:id_card])
+    @user.validate_format({:email => /\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/,:login => /[a-zA-Z0-9]{6,}/,:password => /[a-zA-Z0-9]{6,}/,:id_card => /^(\d{15}$|^\d{18}$|^\d{17}(\d|X|x))$/,:phone => /^\d{11}$/})
+    @user.validate_confirmation :password,:password_confirmation
+
+    if @user.errors.empty?
+
     else
       render :new
     end
@@ -45,5 +48,11 @@ class UsersController < ApplicationController
     end
     flash[:message] = @message
     redirect_to edit_user_path
+  end
+
+  private
+
+  def find_user
+    @user = User.new(params[:user])
   end
 end
