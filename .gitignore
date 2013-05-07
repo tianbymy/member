@@ -18,3 +18,5 @@ _yardoc
 doc/
 log/
 db/
+Gemfile.lock
+Gemfile.local
