@@ -1,0 +1,25 @@
+# config/settings.yml
+defaults: &defaults
+  # 域名配置
+  site_host: 'http://127.0.0.1:3000'
+  # 重置密码配置
+  password_reset:
+    # 过期时间
+    expire_time: 1
+  #邮件配置
+  smtp:
+    username: 'xiegang@zhiyisoft.com'
+    password: 'admin.1987.'
+    port: 25
+    address: 'smtp.ym.163.com'
+    nickname: '四川省服务中心'
+    authentication: 'login'
+    helo_domain: 'zhiyisoft.com'
+development:
+  <<: *defaults
+
+test:
+  <<: *defaults
+
+production:
+  <<: *defaults
