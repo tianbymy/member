@@ -13,7 +13,7 @@ end
 
 gem 'jquery-rails'
 gem 'capistrano'
-
+gem "settingslogic"
 gem 'zhiyi-member', :git => 'git@github.com:zhiyisoft/zhiyi-ldap-member.git'
 gem "slim"
 gem 'execjs'
