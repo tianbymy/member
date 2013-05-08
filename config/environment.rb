@@ -10,5 +10,4 @@ CASClient::Frameworks::Rails::Filter.configure(
   :authenticate_on_every_request => false
 )
 
-
 Member::Application.initialize!

@@ -7,6 +7,8 @@ attr:
   - displayName
   - uid
   - sn
+  - email
+  - phone
   - cn
   - userPassword
 objectclass:
@@ -16,4 +18,4 @@ objectclass:
   - person
 bind:
   dn: cn=admin,dc=soatour,dc=org
-  passwd: ts3qdf
+  passwd: xxxx
