@@ -15,6 +15,7 @@ defaults: &defaults
     nickname: '四川省服务中心'
     authentication: 'login'
     helo_domain: 'zhiyisoft.com'
+  register_redirect: 'http://www.baidu.com'
 development:
   <<: *defaults
 
