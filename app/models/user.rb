@@ -1,32 +1,14 @@
 # encoding: utf-8
-
-# -*- coding: utf-8 -*-
-
-class User #< Unirole::User
+class User < Unirole::User
   include Mongoid::Document
-  field :login
-  field :sn
-  field :cn
-  field :name
-
   field :email
   field :phone
   field :id_card
-  field :password
   field :password_reset_token
   field :password_reset_sent_at
 
-  
-  def self.manager
-    @@manager
-  end
-
-  def self.manager= klass
-    @@manager = klass.instance_of?(Class) ? klass : klass.to_s.constantize
-  end
-
-  # validates :email, uniqueness: true, presence: true, format: { with: /\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/ }
-  # validates :password, confirmation: true, presence: true
+  validates :email, uniqueness: true, presence: true, format: { with: /\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/ }
+  validates :phone, presence: true, format: {with: /^\d{11}$/}
 
   def validate_presence arges
     arges.each do |arge|
@@ -36,7 +18,9 @@ class User #< Unirole::User
 
   def validate_format arges
     arges.each do |k,v|
-      self.errors[k] << (I18n.t :simple_form)[:labels][:user][k].to_s + "格式不正确" if (self[k].match v).nil? 
+      unless self[k].to_s.empty?
+        self.errors[k] << (I18n.t :simple_form)[:labels][:user][k].to_s + "格式不正确" if (self[k].match v).nil?
+      end
     end
   end
 
@@ -44,8 +28,8 @@ class User #< Unirole::User
     self.errors[arge_confirmation] << (I18n.t :simple_form)[:labels][:user][arge_confirmation].to_s + "输入不正确" if self[arge].to_s != self[arge_confirmation].to_s
   end
 
-  def update_password password
-    User.manager.reset_password(self.login, password)
+  def update_password
+    User.manager.reset_password(self.login, self.password)
   end
 
   def update_user_info arge
@@ -54,19 +38,23 @@ class User #< Unirole::User
     self.save
   end
 
-  def create_user
-    @person = {
-      uid: self.login,
-      sn: self.sn,
-      cn: self.cn,
-      displayName: self.name,
-      email: self.email,
-      phone: self.phone,
-      idCard: self.id_card,
-      userPassword: self.password
-    }
-    unless User.manager.exist?(self.login)
-     return User.manager.add(@person)
+  before_create do |user|
+    um = user.class.manager
+    return unless um
+    return user.register if um.exist?(user.login)
+    um.add({
+      uid: user.login,
+      sn: user.sn,
+      cn: user.cn,
+      displayName: user.name,
+      # email: user.email,
+      # phone: user.phone,
+      userPassword: user.password
+    })
+    if um.exist?(user.login)
+      ["password","password_confirmation"].each do |attr|
+        user.remove_attribute(attr)
+      end
     end
   end
 
