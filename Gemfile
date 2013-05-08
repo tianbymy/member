@@ -1,6 +1,5 @@
 source 'http://ruby.taobao.org'
 gem 'rails', '3.2.13'
-gem 'sqlite3'
 
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'
@@ -14,9 +13,12 @@ end
 
 gem 'jquery-rails'
 gem 'capistrano'
-
+gem "settingslogic"
 gem 'zhiyi-member', :git => 'git@github.com:zhiyisoft/zhiyi-ldap-member.git'
 gem "slim"
+gem "resque"
+gem "cancan"
+gem "redis"
 gem 'execjs'
 gem 'thin'
 gem 'cells'
@@ -30,8 +32,10 @@ gem 'mongoid'
 gemfile_local = File.join(File.dirname(__FILE__), 'Gemfile.local')
 
 if File.readable?(gemfile_local)
+  gem 'unirole', :path => '../zhiyi-unirole'
   gem "zhiyi-bootstrap-rails", :require => "bootstrap-rails",:path =>"../zhiyi-bootstrap-rails"
 else
+  gem 'unirole', :git => 'git@github.com:zhiyisoft/zhiyi-unirole.git', :branch => "dev"
   gem "zhiyi-bootstrap-rails", :require => "bootstrap-rails", :git => "git@github.com:zhiyisoft/bootstrap-rails.git", :ref => "HEAD"
 end
 

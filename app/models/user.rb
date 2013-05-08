@@ -1,31 +1,35 @@
-# -*- coding: utf-8 -*-
-
-class User  #< Unirole::User
+# encoding: utf-8
+class User < Unirole::User
   include Mongoid::Document
-  field :login
-  field :sn
-  field :cn
-  field :name
-
   field :email
   field :phone
-  field :password
+  field :id_card
   field :password_reset_token
   field :password_reset_sent_at
 
   validates :email, uniqueness: true, presence: true, format: { with: /\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/ }
-  validates :password, confirmation: true, presence: true
+  validates :phone, presence: true, format: {with: /^\d{11}$/}
 
-  before_create :create_ldap_user
-
-  def validate_old_password arge
-    return "旧密码不能为空" if arge.old_password.empty?
-    return "两次密码输入不一致" if arge.password != arge.password_confirmation
-    return "旧密码输入错误" unless Zhiyi::Member::User.mypass?(self.login,arge.old_password)
+  def validate_presence arges
+    arges.each do |arge|
+      self.errors[arge] << (I18n.t :simple_form)[:labels][:user][arge].to_s + "不能为空" if self[arge].to_s.empty?
+    end
   end
 
-  def update_password password
-    Zhiyi::Member::User.reset_password(self.login, password)
+  def validate_format arges
+    arges.each do |k,v|
+      unless self[k].to_s.empty?
+        self.errors[k] << (I18n.t :simple_form)[:labels][:user][k].to_s + "格式不正确" if (self[k].match v).nil?
+      end
+    end
+  end
+
+  def validate_confirmation arge,arge_confirmation
+    self.errors[arge_confirmation] << (I18n.t :simple_form)[:labels][:user][arge_confirmation].to_s + "输入不正确" if self[arge].to_s != self[arge_confirmation].to_s
+  end
+
+  def update_password
+    User.manager.reset_password(self.login, self.password)
   end
 
   def update_user_info arge
@@ -34,16 +38,23 @@ class User  #< Unirole::User
     self.save
   end
 
-  def create_ldap_user
-    @person = {
-      uid: self.login,
-      sn: self.sn,
-      cn: self.cn,
-      displayName: self.name,
-      userPassword: self.password
-    }
-    unless Zhiyi::Member::User.exist?(self.login)
-      self.remove_attribute(:password) if Zhiyi::Member::User.add @person
+  before_create do |user|
+    um = user.class.manager
+    return unless um
+    return user.register if um.exist?(user.login)
+    um.add({
+      uid: user.login,
+      sn: user.sn,
+      cn: user.cn,
+      displayName: user.name,
+      # email: user.email,
+      # phone: user.phone,
+      userPassword: user.password
+    })
+    if um.exist?(user.login)
+      ["password","password_confirmation"].each do |attr|
+        user.remove_attribute(attr)
+      end
     end
   end
 
