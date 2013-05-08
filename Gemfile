@@ -16,6 +16,9 @@ gem 'capistrano'
 gem "settingslogic"
 gem 'zhiyi-member', :git => 'git@github.com:zhiyisoft/zhiyi-ldap-member.git'
 gem "slim"
+gem "resque"
+gem "cancan"
+gem "redis"
 gem 'execjs'
 gem 'thin'
 gem 'cells'
