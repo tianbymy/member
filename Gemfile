@@ -38,5 +38,7 @@ else
   gem 'unirole', :git => 'git@github.com:zhiyisoft/zhiyi-unirole.git', :branch => "dev"
   gem "zhiyi-bootstrap-rails", :require => "bootstrap-rails", :git => "git@github.com:zhiyisoft/bootstrap-rails.git", :ref => "HEAD"
 end
+# Deploy with Capistrano
+gem 'capistrano'
 
 
