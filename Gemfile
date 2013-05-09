@@ -20,6 +20,7 @@ gem "resque"
 gem "cancan"
 gem "redis"
 gem 'execjs'
+gem 'therubyracer'
 gem 'thin'
 gem 'cells'
 gem 'simple_form'
