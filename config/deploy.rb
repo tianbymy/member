@@ -1,3 +1,4 @@
+=begin
 require 'bundler/capistrano'
 set :keep_releases, 5
 set :application, "member"
@@ -24,7 +25,7 @@ set :bundle_flags, '--quiet'
 
 
 after "deploy:create_symlink", "deploy:stop"
-after "deploy:restart", "deploy:cleanup","bundle:install"
+after "deploy:restart", "deploy:cleanup"#,"bundle:install"
 
 
 namespace :bundle do
@@ -46,3 +47,4 @@ namespace :deploy do
   end
 end
 
+end
