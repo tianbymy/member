@@ -1,6 +1,6 @@
 GIT
   remote: git@github.com:zhiyisoft/zhiyi-ldap-member.git
-  revision: e8674e4089619e07406614e83f08770a1ff4a518
+  revision: e48c7ac4a0536603d13864561de100ed9f101a70
   specs:
     zhiyi-member (0.0.1)
       ruby-ldap
@@ -204,6 +204,10 @@ GEM
       multi_json (~> 1.0, >= 1.0.2)
     vegas (0.1.11)
       rack (>= 1.0.0)
+    will_paginate (3.0.4)
+    will_paginate_mongoid (1.1.0)
+      mongoid (>= 2.4)
+      will_paginate (~> 3.0)
 
 PLATFORMS
   ruby
@@ -229,5 +233,6 @@ DEPENDENCIES
   thin
   uglifier (>= 1.0.3)
   unirole!
+  will_paginate_mongoid
   zhiyi-bootstrap-rails!
   zhiyi-member!
