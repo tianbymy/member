@@ -26,6 +26,7 @@ gem 'simple_form'
 #gem 'simple_form-bootstrap'
 gem 'rubycas-client'
 gem 'font-awesome-rails'
+gem 'will_paginate_mongoid'
 gem 'carrierwave-mongoid','~>0.3.0', :require => 'carrierwave/mongoid'
 gem 'mongoid'
 
