@@ -1,12 +1,16 @@
 # encoding: utf-8
 class UsersController < ApplicationController
-  before_filter CASClient::Frameworks::Rails::Filter, only: [:update,:change_password,:edit]
+  before_filter CASClient::Frameworks::Rails::Filter, only: [:index,:update,:change_password,:edit,:reset_password]
   before_filter :bind_password_value, only: [:update_password]
   before_filter :validate_password, only: [:create,:update_password]
   load_and_authorize_resource
 
   def new
     @user = User.new
+  end
+
+  def index
+    @users = User.all.desc(:updated_at).paginate(:page=>params[:page]||1,:per_page=>5)
   end
 
   def create
@@ -29,11 +33,10 @@ class UsersController < ApplicationController
       @message ="修改成功" if @user.update_password
     end
     flash[:message] = @message
-    redirect_to change_password_users_path if @user.attributes.include?("old_password")
-    redirect_to Settings.register_redirect
+    redirect_to request.referer
   end
 
-  def reset_password
+  def send_reset_password_email
     @user = User.where(email: params[:email]).first
     if @user.nil?
       flash[:message] = "信息输入错误,请重新输入!" 
@@ -42,6 +45,10 @@ class UsersController < ApplicationController
       flash[:message] = "重置密码邮件以发送，请注意查收!"
     end
     redirect_to forgot_password_users_path
+  end
+
+  def reset_password
+    
   end
 
   def set_new_password
@@ -55,7 +62,9 @@ class UsersController < ApplicationController
   end
 
   def update
-    if @user.update_user_info User.new(params[:user])
+    if @user.update_attributes(params[:user])
+      puts @user.login
+      @user.class.manager.update_info(@user.login, params[:user])
       @message ="保存成功"
     else
       @message ="保存失败"
