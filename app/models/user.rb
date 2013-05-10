@@ -1,14 +1,14 @@
 # encoding: utf-8
 class User < Unirole::User
   include Mongoid::Document
-  field :email
-  field :phone
+  field :mail
+  field :mobile
   field :id_card
   field :password_reset_token
   field :password_reset_sent_at
 
-  validates :email, uniqueness: true, presence: true, format: { with: /\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/ }
-  validates :phone, presence: true, format: {with: /^\d{11}$/}
+  validates :mail, uniqueness: true, presence: true, format: { with: /\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/ }
+  validates :mobile, presence: true, format: {with: /^\d{11}$/}
 
   def validate_presence arges
     arges.each do |arge|
@@ -32,23 +32,18 @@ class User < Unirole::User
     User.manager.reset_password(self.login, self.password)
   end
 
-  def update_user_info arge
-    self.email = arge.email
-    self.phone = arge.phone
-    self.save
-  end
-
   before_create do |user|
     um = user.class.manager
     return unless um
     return user.register if um.exist?(user.login)
+    puts user.to_json
     um.add({
       uid: user.login,
       sn: user.sn,
       cn: user.cn,
       displayName: user.name,
-      # email: user.email,
-      # phone: user.phone,
+      mail: user.mail,
+      mobile: user.mobile,
       userPassword: user.password
     })
     if um.exist?(user.login)
