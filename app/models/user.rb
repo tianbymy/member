@@ -29,14 +29,16 @@ class User < Unirole::User
   end
 
   def update_password
-    User.manager.reset_password(self.login, self.password)
+    if self.attributes.include?("old_password")
+      self.errors[:old_password] << "旧密码输入错误" unless User.manager.mypass? self.login, self.old_password
+    end
+    User.manager.reset_password(self.login, self.password) if self.errors.empty?
   end
 
-  before_create do |user|
+  after_create do |user|
     um = user.class.manager
     return unless um
     return user.register if um.exist?(user.login)
-    puts user.to_json
     um.add({
       uid: user.login,
       sn: user.sn,
@@ -47,8 +49,10 @@ class User < Unirole::User
       userPassword: user.password
     })
     if um.exist?(user.login)
+      user.register
       ["password","password_confirmation"].each do |attr|
         user.remove_attribute(attr)
+        user.save
       end
     end
   end
@@ -63,10 +67,22 @@ class User < Unirole::User
     has_organs
   end
 
+  def delete_user
+    if self.class.manager.delete(self.login)
+      return self.delete
+    end
+  end
+
+  def update_info arge
+    if self.update_attributes(arge)
+      return User.manager.update_info(self.login, arge)
+    end
+  end
+
   def send_password_reset
     generate_token(:password_reset_token)
     self.password_reset_sent_at = Time.zone.now
-    Resque.enqueue(Email,"重置密码",Email.to_html("password_reset",{:id => self.password_reset_token}),self.email) if self.save
+    Resque.enqueue(Email,"重置密码",Email.to_html("password_reset",{:token => self.password_reset_token}),self.mail) if self.save
   end
 
   def generate_token(column)
