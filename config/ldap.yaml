@@ -1,8 +1,8 @@
-host: repos.zhiyisoft.com #repos.zhiyisoft.com
+host: www.scscfw.com#repos.zhiyisoft.com #repos.zhiyisoft.com
 port: 389
 base:
-  base: dc=soatour,dc=org
-  person: ou=people,dc=soatour,dc=org
+  base: dc=scscfw,dc=com
+  person: ou=people,dc=scscfw,dc=com
 attr:
   - displayName
   - uid
@@ -17,5 +17,5 @@ objectclass:
   - top
   - person
 bind:
-  dn: cn=admin,dc=soatour,dc=org
+  dn: cn=admin,dc=scscfw,dc=com
   passwd: ts3qdf
