@@ -8,23 +8,23 @@ zh_CN:
         login: 用户名
         password: 密码
         password_confirmation: 确认密码
-        email: 联系邮箱
+        mail: 联系邮箱
         id_card: 身份证
-        phone: 联系电话
+        mobile: 联系电话
     placeholders:
       user:
         login: 6位以上英文字母，请勿使用中文
-        email: 邮箱格式 如:example@163.com
+        mail: 邮箱格式 如:example@163.com
 
   mongoid:
     errors:
       models:
         user:
           attributes:
-            phone:
+            mobile:
               blank: 必填项
               invalid: 请填写正确的联系电话
-            email:
+            mail:
               blank: 必填项
               invalid: 请填写正确的邮箱格式 如： example@163.com
               taken: 此邮箱已经被注册了

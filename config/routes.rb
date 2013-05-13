@@ -1,15 +1,16 @@
 Member::Application.routes.draw do
   match "/users/register" => "users#new"
-  resources :users,:only => [:create,:edit,:update] do
+  resources :users do
     collection do
       get "change_password"
       get "forgot_password"
-      post "reset_password"
+      get "set_new_password"
+      post "send_reset_password_email"
     end
     member do
+      get "lock"
       put "update_password"
-      get "set_new_password"
+      get 'reset_password'
     end
   end
-
 end
