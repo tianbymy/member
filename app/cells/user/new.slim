@@ -1,6 +1,9 @@
 .span2
 .span8
-  h3 注册帐号
+  .page-header
+    h3
+      i.icon.icon-user.text-success
+      span.text-success.word-gap 帐号注册
   = simple_form_for @user, :html => {:class => 'form-horizontal' } do |f|
     = f.input :login
     = f.input :sn
