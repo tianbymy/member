@@ -3,6 +3,7 @@ Member::Application.routes.draw do
   resources :users do
     collection do
       get "change_password"
+      get "edit_user"
       get "forgot_password"
       get "set_new_password"
       post "send_reset_password_email"
@@ -11,6 +12,8 @@ Member::Application.routes.draw do
       get "lock"
       put "update_password"
       get 'reset_password'
+      post "update_password"
     end
   end
+  root :to => 'users#new'
 end
