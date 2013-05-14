@@ -7,6 +7,7 @@ class User < Unirole::User
   field :password_reset_token
   field :password_reset_sent_at
 
+  validates :login, format: {with: /[a-zA-Z0-9]{6,}/}
   validates :mail, uniqueness: true, presence: true, format: { with: /\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/ }
   validates :mobile, presence: true, format: {with: /^\d{11}$/}
 
@@ -28,9 +29,16 @@ class User < Unirole::User
     self.errors[arge_confirmation] << (I18n.t :simple_form)[:labels][:user][arge_confirmation].to_s + "输入不正确" if self[arge].to_s != self[arge_confirmation].to_s
   end
 
+  def validate_password 
+    self.validate_presence([:password,:password_confirmation])
+    self.validate_format({:password => /[a-zA-Z0-9]{6,}/})
+    self.validate_confirmation :password,:password_confirmation
+    self.errors.empty?
+  end
+
   def update_password
     if self.attributes.include?("old_password")
-      self.errors[:old_password] << "旧密码输入错误" unless User.manager.mypass? self.login, self.old_password
+      self.errors[:old_password] << "旧密码输入错误" unless User.manager.mypass?(self.login, self.old_password)
     end
     User.manager.reset_password(self.login, self.password) if self.errors.empty?
   end
@@ -54,6 +62,8 @@ class User < Unirole::User
         user.remove_attribute(attr)
         user.save
       end
+    else
+      user.delete
     end
   end
 
