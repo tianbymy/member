@@ -12,6 +12,7 @@ Member::Application.routes.draw do
       get "lock"
       put "update_password"
       get 'reset_password'
+      post "update"
       post "update_password"
     end
   end

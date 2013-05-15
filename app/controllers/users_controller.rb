@@ -57,13 +57,13 @@ class UsersController < ApplicationController
 
   def update
     if @user.update_info(params[:user])
-      @message ="保存成功"
+      flash[:message] ="保存成功"
     else
-      @message ="保存失败"
-      render :edit_user and return
+      flash[:message] ="保存失败"
+      render :edit_user and return if request.put?
     end
-    flash[:message] = @message
-    redirect_to edit_user_users_path
+    redirect_to edit_user_users_path if request.put?
+    redirect_to users_path if request.post?
   end
 
   def destroy
