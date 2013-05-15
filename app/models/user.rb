@@ -114,6 +114,14 @@ class User
     end
   end
 
+  def self.all_ldap
+    User.manager.all.map { |e| 
+      unless User.where(login: e[:uid]).first 
+        User.new({login: e[:uid], name: e[:display], sn: e[:sn], cn: e[:cn], mail: e[:mail], mobile: e[:mobile]}).save
+      end
+    }
+  end
+
   def send_password_reset
     generate_token(:password_reset_token)
     self.password_reset_sent_at = Time.zone.now

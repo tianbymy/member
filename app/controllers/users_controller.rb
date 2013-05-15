@@ -6,7 +6,8 @@ class UsersController < ApplicationController
   
 
   def index
-    @users = User.all.desc(:updated_at).paginate(:page=>params[:page]||1,:per_page=>5)
+    User.all_ldap
+    @users = User.all.desc(:updated_at).paginate(:page=>params[:page]||1,:per_page=>20)
   end
 
   def create

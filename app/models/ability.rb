@@ -16,7 +16,6 @@ class Ability
 
     unless Settings.admin_user.split(",").include?(user.login)
       cannot :index, User
-      cannot :reset_password, User
     end
 
     # Define abilities for the passed in user here. For example:
