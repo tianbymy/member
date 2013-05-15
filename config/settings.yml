@@ -9,14 +9,14 @@ defaults: &defaults
   #邮件配置
   smtp:
     username: 'xiegang@zhiyisoft.com'
-    password: 'admin.1987.'
+    password: '********'
     port: 25
     address: 'smtp.ym.163.com'
     nickname: '四川省服务中心'
     authentication: 'login'
-    helo_domain: 'zhiyisoft.com'
-  register_redirect: 'http://www.baidu.com'
-  home_page_url: "http://127.0.0.1:8000"
+    helo_domain: 'scscfw.com'
+  register_redirect: 'http://www.scscfw.com:18080'
+  home_page_url: "http://www.scscfw.com:90"
   admin_user: "yinchangxin"
 development:
   <<: *defaults
