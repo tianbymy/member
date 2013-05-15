@@ -1,6 +1,3 @@
-# encoding: utf-8
-
-# -*- coding: utf-8 -*-
 class Ability
   include CanCan::Ability
 
@@ -17,9 +14,8 @@ class Ability
     #   cannot :create, ApplyItem
     # end
 
-    unless user.has_membership_of?("系统管理员")
+    unless Settings.admin_user.split(",").include?(user.login)
       cannot :index, User
-      cannot :reset_password, User
     end
 
     # Define abilities for the passed in user here. For example:
