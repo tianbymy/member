@@ -1,0 +1,16 @@
+div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+  div class="modal-header"
+    button type="button" class="close" data-dismiss="modal" aria-hidden="true" ×
+    h3 id="myModalLabel" 
+      |正在编辑[
+      =@user.login
+      |]
+  = simple_form_for @user ,as: :user,url: main_app.user_path(@user), method: :post,html:{class: "form-horizontal"} do |f|
+    div class="modal-body"
+      = f.input :sn
+      = f.input :cn
+      = f.input :mail
+      = f.input :mobile
+    div class="modal-footer"
+      button class="btn" data-dismiss="modal" aria-hidden="true" 关闭
+      = f.button :submit ,class: "btn-primary",value: "保存"

@@ -3,6 +3,8 @@
     i.icon-cog
     |个人信息设置
 = simple_form_for @user ,as: :user,url: main_app.user_path(@user), method: :put,html:{class: "form-horizontal"} do |f|
+  = f.input :sn
+  = f.input :cn
   = f.input :mail
   = f.input :mobile
   .control-group
