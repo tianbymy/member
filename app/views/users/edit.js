@@ -1,2 +1,2 @@
-$("#dg").html('<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"><%= j render_cell 'user', :edit, :user=>@user %></div>');
+$("#dg").html('<%= j render_cell 'user', :update_info, :user=>@user %>');
 $('#myModal').modal();
