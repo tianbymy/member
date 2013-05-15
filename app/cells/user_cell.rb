@@ -14,6 +14,11 @@ class UserCell < Cell::Rails
     render
   end
 
+  def update_info(args)
+    @user = args[:user]
+    render
+  end
+
   def new(args)
     @user = args[:user]
     render
