@@ -14,4 +14,9 @@ class UserCell < Cell::Rails
     render
   end
 
+  def new(args)
+    @user = args[:user]
+    render
+  end
+
 end

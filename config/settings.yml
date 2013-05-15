@@ -17,6 +17,7 @@ defaults: &defaults
     helo_domain: 'zhiyisoft.com'
   register_redirect: 'http://www.baidu.com'
   home_page_url: "http://127.0.0.1:8000"
+  admin_user: "yinchangxin"
 development:
   <<: *defaults
 

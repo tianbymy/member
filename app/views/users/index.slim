@@ -1,5 +1,5 @@
 /! 引入消息提示页面
-= render_cell 'messages', :index, :message=>flash[:message]
+= render_cell 'messages', :index, :message=>flash[:notice]
 table class="table table-hover table-bordered"
   thead
     tr
@@ -12,8 +12,8 @@ table class="table table-hover table-bordered"
         td = user.name
         td = user.login
         td = user.mail
-        td = link_to '重置密码',reset_password_user_path(user), :remote => true, "data-type" => "script"
-        td = link_to user_lock(user),lock_user_path(user),data: { confirm: '确定此操作吗？' }
+        td = link_to '重置密码', reset_password_user_path(user), :remote => true, "data-type" => "script"
+        td = link_to '删除账户', user_path(user), method: :delete, data: { confirm: '确定此操作吗？' }
 div id="dg"
 .pagination.pull-right
   =will_paginate @users, :previous_label=>'上一页', :next_label=> '下一页'
