@@ -57,9 +57,9 @@ class UsersController < ApplicationController
 
   def update
     if @user.update_info(params[:user])
-      flash[:message] ="保存成功"
+      flash[:notice] ="保存成功"
     else
-      flash[:message] ="保存失败"
+      flash[:notice] ="保存失败"
       render :edit_user and return if request.put?
     end
     redirect_to edit_user_users_path if request.put?
