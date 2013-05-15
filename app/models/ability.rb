@@ -16,7 +16,6 @@ class Ability
 
     unless Settings.admin_user.split(",").include?(user.login)
       cannot :index, User
-      cannot :destroy, User
       cannot :reset_password, User
     end
 

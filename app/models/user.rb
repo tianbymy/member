@@ -1,15 +1,50 @@
 # encoding: utf-8
-class User < Unirole::User
+class User
+  @@manager = nil
+
+  def self.manager
+    @@manager
+  end
+
+  def self.manager= klass
+    @@manager = klass.instance_of?(Class) ? klass : klass.to_s.constantize
+  end
+
   include Mongoid::Document
+  include Mongoid::Timestamps
+
+  field :login
+  field :sn
+  field :cn
+  field :name
   field :mail
   field :mobile
-  field :id_card
   field :password_reset_token
   field :password_reset_sent_at
 
   validates :login, format: {with: /[a-zA-Z0-9]{6,}/}
-  validates :mail, uniqueness: true, presence: true, format: { with: /\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/ }
-  validates :mobile, presence: true, format: {with: /^\d{11}$/}
+  validates :mail, format: { with: /\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/ }
+  validates_uniqueness_of :login, :mail
+  validates_presence_of :sn, :cn, :login, :mail, :mobile
+  validates :mobile, format: {with: /^\d{11}$/}
+
+  state_machine :state, initial: :unregistered do
+    event :register do
+      transition [:unregistered] => :actived
+    end
+
+    event :lock do
+      transition [:actived] => :locked
+    end
+
+    event :unlock do
+      transition [:locked] => :actived
+    end
+  end
+
+  before_save do |user|
+    user.name = user.sn + user.cn
+  end
 
   def validate_presence arges
     arges.each do |arge|
@@ -65,16 +100,6 @@ class User < Unirole::User
     else
       user.delete
     end
-  end
-
-  def has_organs_of(key)
-    has_organs=[]
-    organs.each do |organ|
-      if Decision.allow?("rank" => organ.rank.name,  "behave" => key)
-        has_organs << organ
-      end
-    end
-    has_organs
   end
 
   def delete_user

@@ -23,6 +23,7 @@ zh_CN:
           attributes:
             login:
               invalid: 请填写正确的用户名
+              taken: 用户名已经被注册了
             mobile:
               blank: 必填项
               invalid: 请填写正确的联系电话
