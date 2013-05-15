@@ -110,6 +110,7 @@ class User
 
   def update_info arge
     if self.update_attributes(arge)
+      arge[:displayName] = arge[:sn] + arge[:cn]
       return User.manager.update_info(self.login, arge)
     end
   end
