@@ -1,14 +1,50 @@
 # encoding: utf-8
-class User < Unirole::User
+class User
+  @@manager = nil
+
+  def self.manager
+    @@manager
+  end
+
+  def self.manager= klass
+    @@manager = klass.instance_of?(Class) ? klass : klass.to_s.constantize
+  end
+
   include Mongoid::Document
+  include Mongoid::Timestamps
+
+  field :login
+  field :sn
+  field :cn
+  field :name
   field :mail
   field :mobile
-  field :id_card
   field :password_reset_token
   field :password_reset_sent_at
 
-  validates :mail, uniqueness: true, presence: true, format: { with: /\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/ }
-  validates :mobile, presence: true, format: {with: /^\d{11}$/}
+  validates :login, format: {with: /[a-zA-Z0-9]{6,}/}
+  validates :mail, format: { with: /\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/ }
+  validates_uniqueness_of :login, :mail
+  validates_presence_of :sn, :cn, :login, :mail, :mobile
+  validates :mobile, format: {with: /^\d{11}$/}
+
+  state_machine :state, initial: :unregistered do
+    event :register do
+      transition [:unregistered] => :actived
+    end
+
+    event :lock do
+      transition [:actived] => :locked
+    end
+
+    event :unlock do
+      transition [:locked] => :actived
+    end
+  end
+
+  before_save do |user|
+    user.name = user.sn + user.cn
+  end
 
   def validate_presence arges
     arges.each do |arge|
@@ -28,9 +64,16 @@ class User < Unirole::User
     self.errors[arge_confirmation] << (I18n.t :simple_form)[:labels][:user][arge_confirmation].to_s + "输入不正确" if self[arge].to_s != self[arge_confirmation].to_s
   end
 
+  def validate_password 
+    self.validate_presence([:password,:password_confirmation])
+    self.validate_format({:password => /[a-zA-Z0-9]{6,}/})
+    self.validate_confirmation :password,:password_confirmation
+    self.errors.empty?
+  end
+
   def update_password
     if self.attributes.include?("old_password")
-      self.errors[:old_password] << "旧密码输入错误" unless User.manager.mypass? self.login, self.old_password
+      self.errors[:old_password] << "旧密码输入错误" unless User.manager.mypass?(self.login, self.old_password)
     end
     User.manager.reset_password(self.login, self.password) if self.errors.empty?
   end
@@ -54,17 +97,9 @@ class User < Unirole::User
         user.remove_attribute(attr)
         user.save
       end
+    else
+      user.delete
     end
-  end
-
-  def has_organs_of(key)
-    has_organs=[]
-    organs.each do |organ|
-      if Decision.allow?("rank" => organ.rank.name,  "behave" => key)
-        has_organs << organ
-      end
-    end
-    has_organs
   end
 
   def delete_user

@@ -1,14 +1,16 @@
 # encoding: utf-8
 class UsersController < ApplicationController
   before_filter CASClient::Frameworks::Rails::Filter, only: [:index,:update,:change_password,:edit,:reset_password]
+  before_filter :current_user, only: [:change_password,:edit_user]
   load_and_authorize_resource
+  
 
   def index
-    @users = User.all.desc(:created_at).paginate(:page=>params[:page]||1,:per_page=>5)
+    @users = User.all.desc(:updated_at).paginate(:page=>params[:page]||1,:per_page=>5)
   end
 
   def create
-    validate_password
+    @user.validate_password
     if @user.save
       redirect_to Settings.register_redirect
     else
@@ -18,16 +20,17 @@ class UsersController < ApplicationController
 
   def update_password
     bind_password_value
-    validate_password
-    if @user.update_password
-      flash[:message] ="修改成功"
-    else
-      render :change_password and return if @user.attributes.include?("old_password")
-      render :set_new_password and return
+    if @user.validate_password
+      if @user.update_password
+        if request.put?
+          redirect_to change_password_users_path,:notice => "修改成功" and return if @user.attributes.include?("old_password")
+          redirect_to Settings.home_page_url and return
+        end
+        redirect_to users_path,:notice => "修改成功" and return if request.post?
+      end
     end
-    redirect_to change_password and return if @user.attributes.include?("old_password")
-    redirect_to users_path and return if request.referer.to_s.match /\/users$/
-    redirect_to Settings.home_page_url
+    render :change_password and return if request.put?
+    redirect_to users_path,:notice => "修改失败" if request.post?
   end
 
   def send_reset_password_email
@@ -56,27 +59,22 @@ class UsersController < ApplicationController
       @message ="保存成功"
     else
       @message ="保存失败"
-      render :edit and return
+      render :edit_user and return
     end
     flash[:message] = @message
-    redirect_to edit_user_path
+    redirect_to edit_user_users_path
   end
 
-  def lock
-    if @user.state == "actived"
-      @user.lock
+  def destroy
+    if @user.delete_user
+      flash[:notice] = "删除成功"
     else
-      @user.unlock
+      flash[:notice] = "删除失败"
     end
     redirect_to users_path
   end
 
   private
-  def validate_password
-    @user.validate_presence([:password,:password_confirmation])
-    @user.validate_format({:password => /[a-zA-Z0-9]{6,}/})
-    @user.validate_confirmation :password,:password_confirmation
-  end
 
   def bind_password_value
     params[:user].each do |k,v|

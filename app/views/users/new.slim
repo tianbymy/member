@@ -1,16 +1,2 @@
-.span2
-.span8
-  h3 注册帐号
-  = simple_form_for @user, :html => {:class => 'form-horizontal' } do |f|
-    = f.input :login
-    = f.input :sn
-    = f.input :cn
-    = f.input :id_card
-    = f.input :mobile
-    = f.input :password
-    = f.input :password_confirmation
-    = f.input :mail
-    .form-actions
-      = f.button :submit,:value => "注册", :class => "btn btn-primary"
-      button type="reset" class="btn" 取消
-.span2
+= render_cell 'messages', :index, :message=>flash[:notice]
+= render_cell 'user', :new, :user=>@user
