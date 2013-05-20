@@ -11,7 +11,7 @@ class UsersController < ApplicationController
   end
 
   def search
-    @users = User.where(login: params[:q]).desc(:updated_at).paginate(:page=>params[:page]||1,:per_page=>20) if params[:q]
+    @users = User.where(name: params[:q]).desc(:updated_at).paginate(:page=>params[:page]||1,:per_page=>20) if params[:q]
     render :index
   end
 
