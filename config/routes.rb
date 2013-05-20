@@ -17,5 +17,6 @@ Member::Application.routes.draw do
       post "update_password"
     end
   end
+  match '/logout' => 'application#logout'
   root :to => 'users#new'
 end
