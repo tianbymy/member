@@ -2,13 +2,19 @@
 <html>
 <head>
   <title>四川生产服务网用户管理中心</title>
-  <%= stylesheet_link_tag    "application", :media => "all" %>
+  <%= stylesheet_link_tag    "application", :media => "all" %>  
   <%= javascript_include_tag "application" %>
   <%= csrf_meta_tags %>
 </head>
 <body>
-
-<%= yield %>
+<div class="row">
+	<div class="span2"></div>
+	<div class="span10">
+		<%= render :partial => 'templates/header' %>
+		<div id="content"><%= yield %></div>
+		<%= render :partial => 'templates/footer' %>
+	</div>
+</div>
 
 </body>
 </html>
