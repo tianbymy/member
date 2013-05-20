@@ -1,3 +1,11 @@
+div class="navbar"
+  div class="navbar-inner"
+    div class="container"
+      ul class="nav pull-right"
+        li
+          = form_tag search_users_path,method: "post", class: "navbar-form pull-right" do
+            = search_field_tag "q",nil, placeholder: "姓名或登录名"
+        li class="divider-vertical"
 /! 引入消息提示页面
 = render_cell 'messages', :index, :message=>flash[:notice]
 table class="table table-hover table-bordered"
