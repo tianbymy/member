@@ -10,3 +10,7 @@
 .f-info{background-position:0 -18px !important;}
 .f-manage{background-position:0 -36px !important;}
 .f-internet{background-position:0 -54px !important;}
+
+/*header*/
+.top-bar{height:50px;line-height:50px;overflow: hidden;}
+#header a:hover{text-decoration: none;color: #0088cc !important;}
