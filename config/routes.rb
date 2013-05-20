@@ -5,6 +5,7 @@ Member::Application.routes.draw do
       get "change_password"
       get "edit_user"
       get "forgot_password"
+      post "search"
       get "set_new_password"
       post "send_reset_password_email"
     end

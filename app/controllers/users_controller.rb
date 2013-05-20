@@ -10,9 +10,15 @@ class UsersController < ApplicationController
     @users = User.all.desc(:updated_at).paginate(:page=>params[:page]||1,:per_page=>20)
   end
 
+  def search
+    @users = User.where(login: params[:q]).desc(:updated_at).paginate(:page=>params[:page]||1,:per_page=>20) if params[:q]
+    render :index
+  end
+
   def create
     @user.validate_password
     if @user.save
+      Resque.enqueue(Email,"四川生产服务网-用户注册信息",Email.to_html("new_register",params[:user]),@user.mail)
       redirect_to Settings.register_redirect
     else
       render :new
