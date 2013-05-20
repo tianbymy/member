@@ -1,4 +1,6 @@
 zh_CN:
+  system:
+    logout: 退出
   simple_form:
     labels:
       user:
