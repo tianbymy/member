@@ -95,8 +95,8 @@ class User
       user.register
       ["password","password_confirmation"].each do |attr|
         user.remove_attribute(attr)
-        user.save
       end
+      user.save
     else
       user.delete
     end
