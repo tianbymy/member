@@ -3,7 +3,7 @@ require File.expand_path('../application', __FILE__)
 
 # Initialize the rails application
 CASClient::Frameworks::Rails::Filter.configure(
-  :cas_base_url => "http://sso.zhiyisoft.com/",
+  :cas_base_url => "http://www.scscfw.com:443",
   :username_session_key => :login,
   :extra_attributes_session_key => :login_extra_attributes,
   :enable_single_sign_out => true,
