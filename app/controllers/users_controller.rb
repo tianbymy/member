@@ -1,7 +1,7 @@
 # encoding: utf-8
 class UsersController < ApplicationController
   before_filter CASClient::Frameworks::Rails::Filter, only: [:index,:update_info,:change_password,:edit,:reset_password]
-  before_filter :current_user, only: [:change_password,:edit_user]
+  before_filter :current_user
   before_filter :find_ldap_by_login, only: [:update_info,:edit,:destroy,:reset_password,:update_password]
   before_filter :authorize_admin, only: [:index, :destroy]
   
