@@ -102,7 +102,7 @@ class UsersController < ApplicationController
     end
   end
   def authorize_admin
-    unless Settings.admin_user.split(",").include?(current_user.login)
+    unless Settings.admin_user.split(",").include?(@user.login)
       redirect_to root_path, :notice => '权限不足'
     end
   end
