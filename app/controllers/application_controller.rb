@@ -4,9 +4,9 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
 
   def current_user
-    if session[:login]
-      unless @user ||= User.where(login: session[:login]).first
-        user = User.manager.get_by_uid(session[:login])
+    if session[:cas_user]
+      unless @user ||= User.where(login: session[:cas_user]).first
+        user = User.manager.get_by_uid(session[:cas_user])
         @user = User.new({login: user[:uid], name: user[:display], sn: user[:sn], cn: user[:cn], mail: user[:mail], mobile: user[:mobile]})
         @user.save
       end
