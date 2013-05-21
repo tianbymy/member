@@ -1,13 +1,16 @@
 # encoding: utf-8
 class UsersController < ApplicationController
-  before_filter CASClient::Frameworks::Rails::Filter, only: [:index,:update,:change_password,:edit,:reset_password]
+  before_filter CASClient::Frameworks::Rails::Filter, only: [:index,:update_info,:change_password,:edit,:reset_password]
   before_filter :current_user, only: [:change_password,:edit_user]
   before_filter :find_ldap_by_login, only: [:update_info,:edit,:destroy,:reset_password,:update_password]
   before_filter :authorize_admin, only: [:index, :destroy]
-  # load_and_authorize_resource
   
   def index
     @users = User.all_ldap
+  end
+
+  def new
+    @user = User.new
   end
 
   def search
@@ -16,6 +19,7 @@ class UsersController < ApplicationController
   end
 
   def create
+    @user = User.new(params[:user])
     if @user.create_ldap
       Resque.enqueue(Email,"四川生产服务网-用户注册信息",Email.to_html("new_register",params[:user]),@user.mail)
       redirect_to Settings.register_redirect
@@ -65,6 +69,7 @@ class UsersController < ApplicationController
   end
 
   def update_info
+    @user = User.find_by_login(params[:login]) unless params[:login].to_s.empty?
     if @user.update_info(params[:user])
       flash[:notice] ="保存成功"
     else
@@ -76,6 +81,7 @@ class UsersController < ApplicationController
   end
 
   def destroy
+    @user = User.find_by_login(params[:login]) unless params[:login].to_s.empty?
     if @user and @user.delete_user
       flash[:notice] = "删除成功"
     else
