@@ -1,7 +1,8 @@
-.nav-tabs
-  h3 
-    i.icon-cog
-    |个人信息设置
+ul class="nav nav-tabs" 
+  li.active 
+    a
+      i class="icon-user text-info text-large"
+      | 个人信息设置
 = simple_form_for @user ,as: :user,url: main_app.user_path(@user), method: :put,html:{class: "form-horizontal"} do |f|
   = f.input :sn
   = f.input :cn
@@ -10,3 +11,4 @@
   .control-group
     .controls
       = f.button :submit, :value => "保存"
+      button type="reset" class="btn" 取消

@@ -9,6 +9,10 @@ class UserCell < Cell::Rails
     render
   end
 
+  def forgot_password
+    render
+  end
+
   def edit(args)
     @user = args[:user]
     render

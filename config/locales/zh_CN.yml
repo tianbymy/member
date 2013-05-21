@@ -16,6 +16,8 @@ zh_CN:
     placeholders:
       user:
         login: 6位以上英文字母，请勿使用中文
+        password: 密码格式6位以上
+        password_confirmation: 请填写确认密码
         mail: 邮箱格式 如:example@163.com
 
   mongoid:
