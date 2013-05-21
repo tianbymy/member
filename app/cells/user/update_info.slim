@@ -5,7 +5,7 @@ div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labell
       |正在编辑[
       =@user.login
       |]
-  = simple_form_for @user ,as: :user,url: main_app.user_path(@user), method: :post,html:{class: "form-horizontal"} do |f|
+  = simple_form_for @user ,as: :user,url: main_app.update_info_users_path(login: @user.login), method: :post,html:{class: "form-horizontal"} do |f|
     div class="modal-body"
       = f.input :sn
       = f.input :cn

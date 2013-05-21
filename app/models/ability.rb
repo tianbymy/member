@@ -14,9 +14,9 @@ class Ability
     #   cannot :create, ApplyItem
     # end
 
-    unless Settings.admin_user.split(",").include?(user.login)
-      cannot :index, User
-    end
+    # unless Settings.admin_user.split(",").include?(user.login)
+    #   cannot :index, User
+    # end
 
     # Define abilities for the passed in user here. For example:
     #

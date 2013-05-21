@@ -78,49 +78,47 @@ class User
     User.manager.reset_password(self.login, self.password) if self.errors.empty?
   end
 
-  after_create do |user|
-    um = user.class.manager
-    return unless um
-    return user.register if um.exist?(user.login)
-    um.add({
-      uid: user.login,
-      sn: user.sn,
-      cn: user.cn,
-      displayName: user.name,
-      mail: user.mail,
-      mobile: user.mobile,
-      userPassword: user.password
-    })
-    if um.exist?(user.login)
-      user.register
-      ["password","password_confirmation"].each do |attr|
-        user.remove_attribute(attr)
-      end
-      user.save
-    else
-      user.delete
+  def validate_uniqueness arge
+    arge.each do |e|
+      self.errors[e.to_sym] << (I18n.t :simple_form)[:labels][:user][e.to_sym].to_s + "已经存在" if User.send("find_by_#{e}".to_sym,self[e.to_sym])
+    end
+  end
+
+  def create_ldap
+    self.create_validate
+    if self.errors.empty?
+      User.manager.add({
+        uid: self.login,
+        sn: self.sn,
+        cn: self.cn,
+        displayName: self.sn + self.cn,
+        mail: self.mail,
+        mobile: self.mobile,
+        userPassword: self.password
+      })
+      return User.manager.exist?(self.login)
     end
   end
 
   def delete_user
-    if self.class.manager.delete(self.login)
-      return self.delete
-    end
+    self.class.manager.delete(self.login)
   end
 
   def update_info arge
-    if self.update_attributes(arge)
-      arge[:displayName] = arge[:sn] + arge[:cn]
-      return User.manager.update_info(self.login, arge)
-    end
+    arge[:displayName] = arge[:sn] + arge[:cn]
+    User.manager.update_info(self.login, arge)
   end
 
   def self.all_ldap
-    User.manager.all.map { |e| 
-      unless User.where(login: e[:uid]).first 
-        User.new({login: e[:uid], name: e[:display], sn: e[:sn], cn: e[:cn], mail: e[:mail], mobile: e[:mobile]}).save
-      end
-    }
+    where_ldap({objectclass: "person"})
+  end
+  # 应该用missmethod方法来处理
+  def self.find_by_mail mail
+    where_ldap({mail: mail}).first
+  end
+
+  def self.find_by_login login
+    where_ldap({uid: login}).first
   end
 
   def send_password_reset
@@ -129,9 +127,26 @@ class User
     Resque.enqueue(Email,"重置密码",Email.to_html("password_reset",{:token => self.password_reset_token}),self.mail) if self.save
   end
 
+  def self.where_ldap arge
+    params = ""
+    arge.each do |k,v|
+      params += "(#{k}=#{v})"
+    end
+    User.manager.send(:search,"(|#{params})").map { |e| 
+      User.new({login: e[:uid], name: e[:display], sn: e[:sn], cn: e[:cn], mail: e[:mail], mobile: e[:mobile]})
+    }
+  end
+
   def generate_token(column)
     begin
       self[column] = SecureRandom.urlsafe_base64
     end while User.where(column => self[column]).exists?
+  end
+
+  def create_validate
+    validate_presence([:sn, :cn, :login, :mail, :mobile])
+    validate_format({login: /[a-zA-Z0-9]{6,}/, mail: /\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/, mobile: /^\d{11}$/})
+    validate_password
+    validate_uniqueness(["login","mail"])
   end
 end

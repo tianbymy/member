@@ -11,7 +11,7 @@ div class="navbar"
           li class="divider-vertical"
           li
             = form_tag search_users_path,method: "post", class: "navbar-form pull-right" do
-              = search_field_tag "q",nil,class: "input-medium search-query", placeholder: "姓名检索"
+              = search_field_tag "q",nil,class: "input-medium search-query", placeholder: "姓名或登录名检索"
         ul class="nav pull-right"
           li.menupop
             a.navbar-link  href="/users/change_password" title="点击修改密码"
@@ -41,10 +41,7 @@ table class="table table-hover table-bordered"
         td = user.name
         td = user.login
         td = user.mail
-        td = link_to '编辑信息', edit_user_path(user), :remote => true, "data-type" => "script"
-        td = link_to '重置密码', reset_password_user_path(user), :remote => true, "data-type" => "script"
-        td = link_to '删除账户', user_path(user), method: :delete, data: { confirm: '确定此操作吗？' }
+        td = link_to '编辑信息', edit_users_path(login: user.login), :remote => true, "data-type" => "script"
+        td = link_to '重置密码', reset_password_users_path(login: user.login), :remote => true, "data-type" => "script"
+        td = link_to '删除账户', users_path(login: user.login), method: :delete, data: { confirm: '确定此操作吗？' }
 div id="dg"
-.pagination.pull-right
-  =will_paginate @users, :previous_label=>'上一页', :next_label=> '下一页'
-
