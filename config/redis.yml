@@ -1,0 +1,15 @@
+defaults: &defaults
+  host: 192.168.1.70
+  port: 6379
+
+development:
+  <<: *defaults
+
+test:
+  <<: *defaults
+
+staging:
+  <<: *defaults
+
+production:
+  <<: *defaults
