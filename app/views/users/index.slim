@@ -1,32 +1,27 @@
-div class="navbar"
-  div class="navbar-inner"
-    div class="container"
-      a class="brand" href=users_path 四川生产服务网用户管理中心
-      div class="nav-collapse"
-        ul class="nav"
-          /li
-            a href=users_path 首页
-          li
-            = link_to '添加用户', new_user_path, :remote => true, "data-type" => "script"
-          li class="divider-vertical"
-          li
-            = form_tag search_users_path,method: "post", class: "navbar-form pull-right" do
-              = search_field_tag "q",nil,class: "input-medium search-query", placeholder: "姓名或登录名检索"
-        ul class="nav pull-right"
-          li.menupop
-            a.navbar-link  href="/users/change_password" title="点击修改密码"
-              i.icon-user
-              span
-                =@user.sn
-                =@user.cn
-          li.menupop
-             a.navbar-link  href=edit_user_users_path title="点击编辑个人账户信息"
-              i.icon-cog
-              | 设置
-          li.menupop
-            a.navbar-link  href=main_app.logout_path
-              i.icon-signout
-              = t('system.logout')
+ul class="nav nav-tabs"
+  li.active
+    a href=users_path 用户管理中心
+.nav
+  .pull-left
+    = form_tag search_users_path,method: "post", class: "navbar-form" do
+      = search_field_tag "q",nil,class: "input-large search-query", placeholder: "姓名或登录名检索"
+  .pull-right   
+    a.margin-right5  href="/users/change_password" title="点击修改密码"
+      i.icon-user.text-large
+      span
+        =@user.sn
+        =@user.cn
+
+    a.margin-right5  href=edit_user_users_path title="点击编辑个人账户信息"
+      i.icon-cog.text-large
+      | 设置
+      a href=new_user_path data-remote="true" class="btn margin-right5"
+        i.icon-plus.text-success
+        | 添加用户
+    a.btn  href=main_app.logout_path
+      i.icon-signout.text-error
+      = t('system.logout')
+  .clearfix
 /! 引入消息提示页面
 = render_cell 'messages', :index, :message=>flash[:notice]
 table class="table table-hover table-bordered"

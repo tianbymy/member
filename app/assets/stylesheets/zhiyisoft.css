@@ -1,15 +1,15 @@
 #content{margin-top: 10px;}
 #footer{margin-top:20px;padding:5px 10px;border-top: 1px solid #D2E1F1;}
 .fcopyright {margin:10px auto;}
-.fcopyright p{line-height:23px;}
+.fcopyright p{margin:5px 0;}
 
 /*scscfw-footer*/
-.footer_bar{width:480px;margin: 10px auto 15px;}
-.footer_bar a{background: url("footer_bar.jpg") no-repeat;display: block;float: left;padding-left: 20px;margin-right: 20px;height:18px;line-height: 18px;}
+.footer_bar{margin:10px 0;text-align: center;}
+.footer_bar a{background: url("footer_bar.jpg") no-repeat;padding-left: 20px;margin-right: 20px;}
 .f-police{background-position: ;}
-.f-info{background-position:0 -18px !important;}
-.f-manage{background-position:0 -36px !important;}
-.f-internet{background-position:0 -54px !important;}
+.f-info{background-position:0 -20px !important;}
+.f-manage{background-position:0 -37px !important;}
+.f-internet{background-position:0 -57px !important;}
 
 /*header*/
 .top-bar{height:50px;line-height:50px;overflow: hidden;}
