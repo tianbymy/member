@@ -81,11 +81,15 @@ class UsersController < ApplicationController
   end
 
   def destroy
-    @user = User.find_by_login(params[:login]) unless params[:login].to_s.empty?
-    if @user and @user.delete_user
-      flash[:notice] = "删除成功"
+    if Settings.admin_user.split(",").include?(params[:login])
+      flash[:notice] = "不能删除管理员"
     else
-      flash[:notice] = "删除失败"
+      @user = User.find_by_login(params[:login]) unless params[:login].to_s.empty?
+      if @user and @user.delete_user
+        flash[:notice] = "删除成功"
+      else
+        flash[:notice] = "删除失败"
+      end
     end
     redirect_to users_path
   end
