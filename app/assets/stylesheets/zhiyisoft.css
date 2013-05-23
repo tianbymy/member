@@ -3,6 +3,9 @@
 .fcopyright {margin:10px auto;}
 .fcopyright p{margin:5px 0;}
 
+/* public*/
+.width4 {width:40px;}
+
 /*scscfw-footer*/
 .footer_bar{margin:10px 0;text-align: center;}
 .footer_bar a{background: url("footer_bar.jpg") no-repeat;padding-left: 20px;margin-right: 20px;}

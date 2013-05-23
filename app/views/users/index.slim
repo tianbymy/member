@@ -5,7 +5,7 @@ ul class="nav nav-tabs"
   .pull-left
     = form_tag search_users_path,method: "post", class: "navbar-form" do
       = search_field_tag "q",nil,class: "input-large search-query", placeholder: "姓名或登录名检索"
-      = submit_tag "搜索", :class => "submit"
+      = submit_tag "搜索", :class => "btn"
   .pull-right
     a.margin-right5  href="/users/change_password" title="点击修改密码"
       i.icon-user.text-large
@@ -26,7 +26,7 @@ ul class="nav nav-tabs"
 table class="table table-hover table-bordered"
   thead
     tr.alert-info
-      th 序号
+      th.width4 序号
       th 姓名
       th 登录名
       th 邮箱
