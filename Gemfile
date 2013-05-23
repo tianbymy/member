@@ -19,6 +19,7 @@ gem "slim"
 gem "resque"
 gem "cancan"
 gem "redis"
+gem "redis-mutex"
 gem "state_machine"
 gem 'execjs'
 gem 'therubyracer'
