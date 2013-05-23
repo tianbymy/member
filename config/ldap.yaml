@@ -1,4 +1,4 @@
-host: www.scscfw.com#repos.zhiyisoft.com #repos.zhiyisoft.com
+host: www.scscfw.com #aaaa
 port: 389
 base:
   base: dc=scscfw,dc=com
@@ -7,9 +7,9 @@ attr:
   - displayName
   - uid
   - sn
+  - cn
   - mail
   - mobile
-  - cn
   - userPassword
 objectclass:
   - inetOrgPerson

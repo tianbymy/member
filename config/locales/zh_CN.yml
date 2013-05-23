@@ -1,4 +1,5 @@
 zh_CN:
+  site_url: www.scscfw.com
   system:
     logout: 退出
   simple_form:

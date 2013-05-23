@@ -17,7 +17,7 @@ defaults: &defaults
     helo_domain: 'scscfw.com'
   register_redirect: 'http://www.scscfw.com:18080'
   home_page_url: "http://www.scscfw.com:90"
-  admin_user: "yinchangxin"
+  admin_user: "administrator"
 development:
   <<: *defaults
 
