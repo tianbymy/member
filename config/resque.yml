@@ -1,0 +1,3 @@
+development: redis://123.0.0.1:6379
+test: redis://123.0.0.1:6379
+production: redis://localhost:6379
