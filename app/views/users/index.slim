@@ -37,14 +37,16 @@ table class="table table-hover table-bordered"
         td colspan="5" style="text-align:center"
           span 没有搜索到记录
           a href=users_path style="margin-left:10px;" 返回
-    - @users.each_with_index do |user,index|
-      tr
-        td = index+1
-        td = user.name
-        td = user.login
-        td = user.mail
-        td
-          span.margin-right5 = link_to '编辑信息', edit_users_path(login: user.login), :remote => true, "data-type" => "script"
-          span.margin-right5 = link_to '重置密码', reset_password_users_path(login: user.login), :remote => true, "data-type" => "script"
-          span = link_to '删除账户', users_path(login: user.login), method: :delete, data: { confirm: '确定此操作吗？' }
-div id="dg"
+    -else
+
+      - @users.each_with_index do |user,index|
+        tr
+          td = index+1
+          td = user.name
+          td = user.login
+          td = user.mail
+          td
+            span.margin-right5 = link_to '编辑信息', edit_users_path(login: user.login), :remote => true, "data-type" => "script"
+            span.margin-right5 = link_to '重置密码', reset_password_users_path(login: user.login), :remote => true, "data-type" => "script"
+            span = link_to '删除账户', users_path(login: user.login), method: :delete, data: { confirm: '确定此操作吗？' }
+  div id="dg"
