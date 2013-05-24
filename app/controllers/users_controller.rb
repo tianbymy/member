@@ -53,9 +53,8 @@ class UsersController < ApplicationController
   end
 
   def send_reset_password_email
-    p User.where(mail: params[:mail])
-    @user = User.where(mail: params[:mail]).first
-    p @user
+    @user = User.find_by_mail(params[:mail]) unless params[:mail].to_s.empty?
+
     if @user.nil?
       flash[:message] = "信息输入错误,请重新输入!"
     else
