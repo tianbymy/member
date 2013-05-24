@@ -29,6 +29,7 @@ class UsersController < ApplicationController
   end
 
   def update_password
+    @user = find_ldap_by_login
     bind_password_value
     if @user.validate_password
       if @user.update_password
@@ -43,12 +44,18 @@ class UsersController < ApplicationController
     redirect_to users_path,:notice => "修改失败" if request.post?
   end
 
+  def edit
+    @user = find_ldap_by_login
+  end
+
   def reset_password
     @user = find_ldap_by_login
   end
 
   def send_reset_password_email
+    p User.where(mail: params[:mail])
     @user = User.where(mail: params[:mail]).first
+    p @user
     if @user.nil?
       flash[:message] = "信息输入错误,请重新输入!"
     else
