@@ -8,8 +8,8 @@ defaults: &defaults
     expire_time: 1
   #邮件配置
   smtp:
-    username: 'xiegang@zhiyisoft.com'
-    password: '********'
+    username: 'scrxcscfww@163.com'
+    password: 'cscrxckjyxgs'
     port: 25
     address: 'smtp.ym.163.com'
     nickname: '四川省服务中心'
@@ -18,6 +18,7 @@ defaults: &defaults
   register_redirect: 'http://www.scscfw.com:18080'
   home_page_url: "http://www.scscfw.com:90"
   admin_user: "administrator"
+  no_permission: "对不起，您没有操作该功能的权限。"
 development:
   <<: *defaults
 

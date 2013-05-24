@@ -12,7 +12,7 @@ class ApplicationController < ActionController::Base
   end
 
   rescue_from CanCan::AccessDenied do |exception|
-    redirect_to root_url, :notice => "权限不足"
+    redirect_to root_url, :notice => Settings.no_permission
   end
 
 end

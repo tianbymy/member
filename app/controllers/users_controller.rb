@@ -4,7 +4,7 @@ class UsersController < ApplicationController
   before_filter :current_user
   before_filter :find_ldap_by_login, only: [:update_info,:edit,:destroy,:reset_password,:update_password]
   before_filter :authorize_admin, only: [:index, :destroy]
-  
+
   def index
     @users = User.all_ldap
   end
@@ -44,13 +44,13 @@ class UsersController < ApplicationController
   end
 
   def reset_password
-    @user = User.find_by_login(params[:login]) unless params[:login].to_s.empty? 
+    @user = find_ldap_by_login
   end
 
   def send_reset_password_email
     @user = User.where(mail: params[:mail]).first
     if @user.nil?
-      flash[:message] = "信息输入错误,请重新输入!" 
+      flash[:message] = "信息输入错误,请重新输入!"
     else
       @user.send_password_reset
       flash[:message] = "重置密码邮件以发送，请注意查收!"
@@ -63,13 +63,14 @@ class UsersController < ApplicationController
     if @user.nil?
       flash[:message] = "找回密码链接不正确"
     else
-      flash[:message] = "找回密码链接过期" if @user.password_reset_sent_at < Settings.password_reset.expire_time.hours.ago
+      flash[:message] = "对不起，找回密码链接已经过期，请重新申请" if @user.password_reset_sent_at < Settings.password_reset.expire_time.hours.ago
     end
     redirect_to forgot_password_users_path and return unless flash[:message].nil?
   end
 
   def update_info
-    @user = User.find_by_login(params[:login]) unless params[:login].to_s.empty?
+    @user = find_ldap_by_login
+
     if @user.update_info(params[:user])
       flash[:notice] ="保存成功"
     else
@@ -84,7 +85,7 @@ class UsersController < ApplicationController
     if Settings.admin_user.split(",").include?(params[:login])
       flash[:notice] = "不能删除管理员"
     else
-      @user = User.find_by_login(params[:login]) unless params[:login].to_s.empty?
+      @user = find_ldap_by_login
       if @user and @user.delete_user
         flash[:notice] = "删除成功"
       else
@@ -97,7 +98,7 @@ class UsersController < ApplicationController
   private
 
   def find_ldap_by_login
-    @user = User.find_by_login(params[:login]) unless params[:login].to_s.empty?
+    User.find_by_login(params[:login]) unless params[:login].to_s.empty?
   end
 
   def bind_password_value
@@ -107,7 +108,7 @@ class UsersController < ApplicationController
   end
   def authorize_admin
     unless Settings.admin_user.split(",").include?(@user.login)
-      redirect_to root_path, :notice => '权限不足'
+      redirect_to root_path, :notice => Settings.no_permission
     end
   end
 end
