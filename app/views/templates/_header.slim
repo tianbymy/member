@@ -5,15 +5,15 @@
         a.pull-left href="http://www.scscfw.com"
           img src="/assets/logo.png" alt="四川生产服务网"
       .span10
-        a.pull-right.muted href="http://www.scscfw.com"
-          i.icon-home.text-info
+        a.pull-right.muted.margin-right5 href="http://www.scscfw.com"
+          i.icon-home.text-info.text-xlarge
           span 网站首页
           span
         -if session[:cas_user].nil?
-          a.pull-right.muted href="http://www.scscfw.com:443/login?server=http://www.scscfw.com"
-            i.icon-signin.text-info
+          a.pull-right.muted.margin-right5 href="http://www.scscfw.com:443/login?server=http://www.scscfw.com"
+            i.icon-user.text-info.text-xlarge
             span 登录
         -else
-          a.pull-right.muted href="/logout"
-            i.icon-signout.text-info
+          a.pull-right.muted.margin-right5 href="/logout"
+            i.icon-signout.text-info.text-xlarge
             span 退出
