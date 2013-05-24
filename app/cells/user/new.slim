@@ -1,16 +1,20 @@
-ul class="nav nav-tabs" 
-  li.active 
+ul class="nav nav-tabs"
+  li.active
     a
       i class="icon-edit text-info text-xlarge"
       span.text-large 帐号注册
+  li
+    a href=forgot_password_users_path
+      i class="icon-info-sign text-larg text-info"
+      span.text-info 忘记密码
 = simple_form_for @user, :html => {:class => 'form-horizontal' } do |f|
   = f.input :login
   = f.input :sn
-  = f.input :cn    
+  = f.input :cn
   = f.input :password
   = f.input :password_confirmation
   = f.input :mail
-  = f.input :mobile  
+  = f.input :mobile
   .controls
     = f.button :submit,:value => "注 册", :class => "btn btn-primary"
     button type="reset" class="btn" 取 消
