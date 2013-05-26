@@ -9,7 +9,7 @@ defaults: &defaults
   #邮件配置
   smtp:
     username: 'scrxcscfww@163.com'
-
+    password: 'cscrxckjyxgs'
     port: 25
     address: 'smtp.163.com'
     nickname: '四川省服务中心'

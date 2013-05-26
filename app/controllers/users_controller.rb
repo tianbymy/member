@@ -29,7 +29,9 @@ class UsersController < ApplicationController
   end
 
   def update_password
-    @user = find_ldap_by_login
+    p params
+    @user = User.find_by_login(@params[:login]) unless params[:login].to_s.empty?
+    p @user
     bind_password_value
     if @user.validate_password
       if @user.update_password
