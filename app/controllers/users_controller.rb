@@ -115,8 +115,13 @@ class UsersController < ApplicationController
     end
   end
   def authorize_admin
+<<<<<<< HEAD
     unless Settings.admin_user.split(",").include?(@user.login)
       redirect_to root_path, :notice => Settings.no_permission
+=======
+    unless Settings.admin_user.split(",").include?(current_user.login)
+      redirect_to root_path, :notice => '权限不足'
+>>>>>>> yinchangxin/dev
     end
   end
 end
