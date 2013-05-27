@@ -64,7 +64,7 @@ class User
     self.errors[arge_confirmation] << (I18n.t :simple_form)[:labels][:user][arge_confirmation].to_s + "输入不正确" if self[arge].to_s != self[arge_confirmation].to_s
   end
 
-  def validate_password 
+  def validate_password
     self.validate_presence([:password,:password_confirmation])
     self.validate_format({:password => /[a-zA-Z0-9]{6,}/})
     self.validate_confirmation :password,:password_confirmation
@@ -122,8 +122,11 @@ class User
   end
 
   def send_password_reset
+    p "send_password_reset:"
     generate_token(:password_reset_token)
     self.password_reset_sent_at = Time.zone.now
+    p Email.to_html("password_reset",{:token => self.password_reset_token})
+    p self.mail
     Resque.enqueue(Email,"重置密码",Email.to_html("password_reset",{:token => self.password_reset_token}),self.mail) if self.save
   end
 
@@ -132,7 +135,7 @@ class User
     arge.each do |k,v|
       params += "(#{k}=#{v})"
     end
-    User.manager.send(:search,"(|#{params})").map { |e| 
+    User.manager.send(:search,"(|#{params})").map { |e|
       User.new({login: e[:uid], name: e[:display], sn: e[:sn], cn: e[:cn], mail: e[:mail], mobile: e[:mobile]})
     }
   end

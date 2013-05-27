@@ -58,7 +58,7 @@ class UsersController < ApplicationController
     @user = User.find_by_mail(params[:mail]) unless params[:mail].to_s.empty?
 
     if @user.nil?
-      flash[:message] = "信息输入错误,请重新输入!"
+      flash[:message] = "邮件地址未找到，请重新输入!"
     else
       @user.send_password_reset
       flash[:message] = "重置密码邮件以发送，请注意查收!"

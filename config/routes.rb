@@ -1,10 +1,11 @@
 Member::Application.routes.draw do
   match "/users/register" => "users#new"
   resources :users do
-    post "update_password"
-    put "update_password"
 
     collection do
+      post "update_password"
+      put "update_password"
+
       get "change_password"
       get "edit_user"
       get "edit"
