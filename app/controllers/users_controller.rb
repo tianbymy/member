@@ -21,9 +21,6 @@ class UsersController < ApplicationController
   def create
     @user = User.new(params[:user])
     if @user.create_ldap
-      p Email.to_html("new_register",params[:user])
-      p @user.mail
-
       Resque.enqueue(Email,"四川生产服务网-用户注册信息",Email.to_html("new_register",params[:user]),@user.mail)
       redirect_to Settings.register_redirect
     else
