@@ -1,4 +1,4 @@
-# encoding: utf-8
+# -*- coding: utf-8 -*-
 class UsersController < ApplicationController
   before_filter CASClient::Frameworks::Rails::Filter, only: [:index,:update_info,:change_password,:edit,:reset_password,:edit_user]
   before_filter :current_user
@@ -21,6 +21,9 @@ class UsersController < ApplicationController
   def create
     @user = User.new(params[:user])
     if @user.create_ldap
+      p Email.to_html("new_register",params[:user])
+      p @user.mail
+
       Resque.enqueue(Email,"四川生产服务网-用户注册信息",Email.to_html("new_register",params[:user]),@user.mail)
       redirect_to Settings.register_redirect
     else
