@@ -23,18 +23,3 @@ ul class="nav nav-tabs"
 /! 引入消息提示页面
 = render_cell 'messages', :index, :message=>flash[:notice]
 = render_cell 'user', :index, :users=>@users
-div class="pagination"
-  ul
-    - if params[:page].to_i > 1
-      li
-        a href="?page=#{params[:page].to_i - 1}" 前一页
-    - (will_page_size @users.size,15).times do |i|
-      - if i.next == params[:page].to_i
-        li class="active"
-          a href="?page=#{i.next}" =i.next
-      - else
-        li
-          a href="?page=#{i.next}" =i.next
-    - if params[:page].to_i < (will_page_size @users.size,15)
-      li
-        a href="?page=#{params[:page].to_i + 1}" 后一页

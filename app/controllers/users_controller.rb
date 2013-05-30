@@ -16,8 +16,7 @@ class UsersController < ApplicationController
   end
 
   def search
-    @users = User.where_ldap({:displayName => params[:q], :uid => params[:q]}) if params[:q]
-    render :index
+    @users = User.where_ldap({:displayName => "*#{params[:q]}*", :uid => "*#{params[:q]}*"}) if params[:q]
   end
 
   def create
