@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 # -*- coding: utf-8 -*-
 class UsersController < ApplicationController
   before_filter CASClient::Frameworks::Rails::Filter, only: [:index,:update_info,:change_password,:edit,:reset_password,:edit_user]
@@ -29,9 +31,7 @@ class UsersController < ApplicationController
   end
 
   def update_password
-    p params
-    @user = User.find_by_login(@params[:login]) unless params[:login].to_s.empty?
-    p @user
+    @user = User.find_by_login(params[:login]) unless params[:login].to_s.empty?
     bind_password_value
     if @user.validate_password
       if @user.update_password
