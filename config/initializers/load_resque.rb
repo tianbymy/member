@@ -1,7 +1,6 @@
 require "redis"
 require "resque"
 require 'redis/namespace'
-require 'resque'
 
 #NOTICE 如果 整个 web 项目需要用  redis , 请把 这个文件移到  config/initializers 目录下
 
@@ -13,5 +12,4 @@ if File.file?(resque_config_file)
     Resque.redis = resque_config[Rails.env]
   end
 end
-Resque.redis.namespace = "member"
-Redis::Classy.db = Resque.redis
+Resque.redis.namespace = :resque
