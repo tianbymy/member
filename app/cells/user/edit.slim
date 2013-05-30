@@ -10,5 +10,5 @@ ul class="nav nav-tabs"
   = f.input :mobile
   .control-group
     .controls
-      = f.button :submit, :value => "保存"
-      button type="reset" class="btn" 取消
+      = f.button :submit, :value => "保存", :class => "btn btn-primary"
+      a class="btn" href=Settings.user_home_page_url 关闭
