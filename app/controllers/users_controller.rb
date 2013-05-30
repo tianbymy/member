@@ -29,20 +29,36 @@ class UsersController < ApplicationController
     end
   end
 
+  def update_own_password
+    bind_password_value
+    if @user.update_password
+      redirect_to change_password_users_path,:notice => "修改成功" 
+    else
+      render :change_password
+    end
+  end
+
   def update_password
     @user = User.find_by_login(params[:login]) unless params[:login].to_s.empty?
     bind_password_value
-    if @user.validate_password
-      if @user.update_password
-        if request.put?
-          redirect_to change_password_users_path,:notice => "修改成功" and return if @user.attributes.include?("old_password")
-          redirect_to Settings.home_page_url and return
-        end
-        redirect_to users_path,:notice => "修改成功" and return if request.post?
-      end
+
+    if @user.update_password
+      redirect_to users_path,:notice => "修改成功"
+    else
+      redirect_to users_path,:notice => "修改失败"
     end
-    render :change_password and return if request.put?
-    redirect_to users_path,:notice => "修改失败" if request.post?
+  end
+
+  def set_password
+    @user = User.find_by_login(params[:login]) unless params[:login].to_s.empty?
+    bind_password_value
+
+    if @user.update_password
+      Resque.redis.del(@user.login)
+      redirect_to new_user_path,:notice => "设置成功"
+    else
+      redirect_to request.headers["Referer"],:notice => "设置失败,请注意填写格式"
+    end
   end
 
   def edit
@@ -54,23 +70,28 @@ class UsersController < ApplicationController
   end
 
   def send_reset_password_email
-    @user = User.find_by_mail(params[:mail]) unless params[:mail].to_s.empty?
-
-    if @user.nil?
+    user = User.find_by_mail(params[:mail]) unless params[:mail].to_s.empty?
+  
+    if user.nil?
       flash[:message] = "邮件地址未找到，请重新输入!"
     else
-      @user.send_password_reset
+      User.send_password_reset user
       flash[:message] = "重置密码邮件以发送，请注意查收!"
     end
     redirect_to forgot_password_users_path
   end
 
   def set_new_password
-    @user = User.where(password_reset_token: params[:token]).first unless params[:token].nil?
-    if @user.nil?
-      flash[:message] = "找回密码链接不正确"
-    else
-      flash[:message] = "对不起，找回密码链接已经过期，请重新申请" if @user.password_reset_sent_at < Settings.password_reset.expire_time.hours.ago
+    if params[:login] and params[:token]
+      @user = find_ldap_by_login
+      token = Resque.redis.get(params[:login])
+      if token.nil?
+        flash[:message] = "对不起，找回密码链接已经过期，请重新申请"
+      else
+        if token != params[:token]
+          flash[:message] = "找回密码链接不正确"
+        end
+      end
     end
     redirect_to forgot_password_users_path and return unless flash[:message].nil?
   end

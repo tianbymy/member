@@ -19,8 +19,6 @@ class User
   field :name
   field :mail
   field :mobile
-  field :password_reset_token
-  field :password_reset_sent_at
 
   validates :login, format: {with: /[a-zA-Z0-9]{6,}/}
   validates :mail, format: { with: /\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/ }
@@ -68,14 +66,17 @@ class User
     self.validate_presence([:password,:password_confirmation])
     self.validate_format({:password => /[a-zA-Z0-9]{6,}/})
     self.validate_confirmation :password,:password_confirmation
+    if self.attributes.include?("old_password")
+      self.errors[:old_password] << "旧密码输入错误" unless User.manager.mypass?(self.login, self.old_password)
+    end
     self.errors.empty?
   end
 
   def update_password
-    if self.attributes.include?("old_password")
-      self.errors[:old_password] << "旧密码输入错误" unless User.manager.mypass?(self.login, self.old_password)
+    if self.validate_password
+      return User.manager.reset_password(self.login, self.password)
     end
-    User.manager.reset_password(self.login, self.password) if self.errors.empty?
+    return false
   end
 
   def validate_uniqueness arge
@@ -121,13 +122,12 @@ class User
     where_ldap({uid: login}).first
   end
 
-  def send_password_reset
-    p "send_password_reset:"
-    generate_token(:password_reset_token)
-    self.password_reset_sent_at = Time.zone.now
-    p Email.to_html("password_reset",{:token => self.password_reset_token})
-    p self.mail
-    Resque.enqueue(Email,"重置密码",Email.to_html("password_reset",{:token => self.password_reset_token}),self.mail) if self.save
+  def self.send_password_reset user
+    token = SecureRandom.urlsafe_base64
+    Resque.redis.set(user.login, token)
+    Resque.redis.expire(user.login,Settings.password_reset.expire_time)
+    Resque.enqueue(Email,"重置密码",Email.to_html("password_reset",{:token => token, :login => user.login}),user.mail)
+    token
   end
 
   def self.where_ldap arge
@@ -138,12 +138,6 @@ class User
     User.manager.send(:search,"(|#{params})").map { |e|
       User.new({login: e[:uid], name: e[:display], sn: e[:sn], cn: e[:cn], mail: e[:mail], mobile: e[:mobile]})
     }
-  end
-
-  def generate_token(column)
-    begin
-      self[column] = SecureRandom.urlsafe_base64
-    end while User.where(column => self[column]).exists?
   end
 
   def create_validate

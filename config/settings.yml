@@ -5,7 +5,7 @@ defaults: &defaults
   # 重置密码配置
   password_reset:
     # 过期时间
-    expire_time: 1
+    expire_time: 3600
   #邮件配置
   smtp:
     username: 'scrxcscfww@163.com'
@@ -17,7 +17,8 @@ defaults: &defaults
     helo_domain: 'scscfw.com'
   register_redirect: 'http://www.scscfw.com:18080'
   home_page_url: "http://www.scscfw.com:90"
-  admin_user: "administrator"
+  admin_user: "administrator,yinchangxin"
+  user_home_page_url: "http://www.scscfw.com"
   no_permission: "对不起，您没有操作该功能的权限。"
 development:
   <<: *defaults

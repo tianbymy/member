@@ -4,7 +4,8 @@ Member::Application.routes.draw do
 
     collection do
       post "update_password"
-      put "update_password"
+      post "update_own_password"
+      post "set_password"
 
       get "change_password"
       get "edit_user"
@@ -12,6 +13,7 @@ Member::Application.routes.draw do
       get "forgot_password"
       get 'reset_password'
       post "search"
+      get "search"
       post "update_info"
       get "set_new_password"
 
