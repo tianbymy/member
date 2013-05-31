@@ -4,21 +4,23 @@ ul class="nav nav-tabs"
 .nav
   .pull-left
     = form_tag search_users_path,method: "post", class: "navbar-form" do
-      = search_field_tag "q",nil,class: "input-large search-query", placeholder: "姓名或登录名检索"
-      = submit_tag "搜索", :class => "btn"
-  .pull-right
-    a.margin-right5  href="/users/change_password" title="点击修改密码"
-      i.icon-user.text-large
+      = search_field_tag "q",nil,class: "input-large margin-right5", placeholder: "姓名或登录名检索"
+      = submit_tag "搜索", :class => "btn btn-primary"
+  .btn-group class="pull-right" data-toggle="buttons-radio"
+    
+    a href="/users/change_password" title="点击修改密码" class="btn"
+      i.icon-user.text-info
       span
         =@user.sn
         =@user.cn
+    
+    a  href=edit_user_users_path title="点击编辑个人账户信息" class="btn"
+      i.icon-cog.text-info
+      | 信息设置
 
-    a.margin-right5  href=edit_user_users_path title="点击编辑个人账户信息"
-      i.icon-cog.text-large
-      | 设置
-      a href=new_user_path data-remote="true" class="btn margin-right5"
-        i.icon-plus.text-success
-        | 添加用户
+    a href=new_user_path data-remote="true" class="btn"
+      i.icon-plus.text-success
+      | 添加用户
   .clearfix
 /! 引入消息提示页面
 = render_cell 'messages', :index, :message=>flash[:notice]
