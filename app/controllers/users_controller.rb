@@ -43,9 +43,11 @@ class UsersController < ApplicationController
     bind_password_value
 
     if @user.update_password
-      redirect_to users_path,:notice => "修改成功"
+      #redirect_to users_path,:notice => "修改成功"
+      redirect_to request.headers["Referer"], :notice => "修改成功"
     else
-      redirect_to users_path,:notice => "修改失败"
+      #redirect_to users_path,:notice => "修改失败"
+      redirect_to request.headers["Referer"], :notice => "修改失败"
     end
   end
 
