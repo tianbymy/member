@@ -5,7 +5,7 @@ class UsersController < ApplicationController
   before_filter CASClient::Frameworks::Rails::Filter, only: [:index,:update_info,:change_password,:edit,:reset_password,:edit_user]
   before_filter :current_user
   before_filter :find_ldap_by_login, only: [:update_info,:edit,:destroy,:reset_password,:update_password]
-  before_filter :authorize_admin, only: [:index, :destroy]
+  before_filter :authorize_admin, only: [:index, :destroy,:reset_password]
 
   def index
     @users = User.all_ldap
@@ -67,6 +67,7 @@ class UsersController < ApplicationController
 
   def reset_password
     @user = find_ldap_by_login
+    render layout: false
   end
 
   def send_reset_password_email
