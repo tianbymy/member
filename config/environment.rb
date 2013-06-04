@@ -9,6 +9,7 @@ CASClient::Frameworks::Rails::Filter.configure(
   :enable_single_sign_out => true,
   :authenticate_on_every_request => false
 )
-require "#{Rails.root}/db/account.rb"
+
+
 
 Member::Application.initialize!
