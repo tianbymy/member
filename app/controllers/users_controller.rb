@@ -13,6 +13,7 @@ class UsersController < ApplicationController
 
   def new
     @user = User.new
+    session[:Referer] = (request.headers["Referer"].to_s.match /http:\/\/.*?(\/)/).to_s
   end
 
   def search
@@ -23,7 +24,12 @@ class UsersController < ApplicationController
     @user = User.new(params[:user])
     if @user.create_ldap
       Resque.enqueue(Email,"四川生产服务网-用户注册信息",Email.to_html("new_register",params[:user]),@user.mail)
-      redirect_to Settings.register_redirect
+      flash[:notice] = "注册成功"
+      if session[:Referer]
+        redirect_to session[:Referer]
+      else
+        redirect_to Settings.register_redirect
+      end
     else
       render :new
     end
