@@ -5,7 +5,11 @@ require "#{Rails.root}/db/city_enterprise.rb"
 
 account = Cityaccount::City.city_account
 enterprise = Cityenterprise::City.city_account
-fh = File.new("db/fail", "rw")
+Zhiyi::Member.load("#{Rails.root.to_s}/config/ldap.yaml")
+User.manager = Zhiyi::Member::User
+
+fh = File.new("db/fail", "w")
+
 enterprise.each do |x|
   row = []
   user = User.new({login: x["login"], sn:  x["login"] , cn:  x["login"], name:  x["login"], mail: x["email"], mobile: "13800000000" ,password_confirmation: "123456" ,password: "123456"})
