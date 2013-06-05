@@ -1,7 +1,7 @@
 # config/settings.yml
 defaults: &defaults
   # 域名配置
-  site_host: 'http://127.0.0.1:3000'
+  site_host: 'http://www.scscfw.con:90'
   # 重置密码配置
   password_reset:
     # 过期时间
@@ -15,7 +15,7 @@ defaults: &defaults
     nickname: '四川省服务中心'
     authentication: 'login'
     helo_domain: 'scscfw.com'
-  register_redirect: 'http://www.scscfw.com:18080'
+  register_redirect: 'http://www.scscfw.com'
   home_page_url: "http://www.scscfw.com:90"
   admin_user: "administrator,yinchangxin"
   user_home_page_url: "http://www.scscfw.com"
