@@ -6,6 +6,7 @@ class UsersController < ApplicationController
   before_filter :current_user
   before_filter :find_ldap_by_login, only: [:update_info,:edit,:destroy,:reset_password,:update_password]
   before_filter :authorize_admin, only: [:index, :destroy,:reset_password]
+  before_filter :set_referer, only: [:forgot_password,:new]
 
   def index
     @users = User.all_ldap
@@ -13,7 +14,6 @@ class UsersController < ApplicationController
 
   def new
     @user = User.new
-    session[:Referer] = (request.headers["Referer"].to_s.match /http:\/\/.*?(\/)/).to_s
   end
 
   def search
@@ -62,8 +62,13 @@ class UsersController < ApplicationController
     bind_password_value
 
     if @user.update_password
+      flash[:notice] = "重置成功"
       Resque.redis.del(@user.login)
-      redirect_to new_user_path,:notice => "设置成功"
+      if session[:Referer]
+        redirect_to session[:Referer]
+      else
+        redirect_to Settings.site_host
+      end 
     else
       redirect_to request.headers["Referer"],:notice => "设置失败,请注意填写格式"
     end
@@ -133,6 +138,10 @@ class UsersController < ApplicationController
   end
 
   private
+
+  def set_referer
+    session[:Referer] = (request.headers["Referer"].to_s.match /http:\/\/.*?(\/)/).to_s
+  end
 
   def find_ldap_by_login
     User.find_by_login(params[:login]) unless params[:login].to_s.empty?
