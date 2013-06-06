@@ -16,7 +16,7 @@ class UsersController < ApplicationController
     @user = User.new
     respond_to do |format|
       format.html {render "new.slim"}
-      format.js{render "new.js"}
+      format.js {render "new.js"}
     end
   end
 
