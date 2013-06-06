@@ -14,6 +14,10 @@ class UsersController < ApplicationController
 
   def new
     @user = User.new
+    respond_to do |format|
+      format.html {render "new.slim"}
+      format.js {render "new.js"}
+    end
   end
 
   def search
