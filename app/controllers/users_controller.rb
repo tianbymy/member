@@ -14,6 +14,10 @@ class UsersController < ApplicationController
 
   def new
     @user = User.new
+    respond_to do |format|
+      format.html {render "new.slim"}
+      format.js{render "new.js"}
+    end
   end
 
   def search
@@ -38,7 +42,7 @@ class UsersController < ApplicationController
   def update_own_password
     bind_password_value
     if @user.update_password
-      redirect_to change_password_users_path,:notice => "修改成功" 
+      redirect_to change_password_users_path,:notice => "修改成功"
     else
       render :change_password
     end
@@ -68,7 +72,7 @@ class UsersController < ApplicationController
         redirect_to session[:Referer]
       else
         redirect_to Settings.site_host
-      end 
+      end
     else
       redirect_to request.headers["Referer"],:notice => "设置失败,请注意填写格式"
     end
@@ -85,7 +89,7 @@ class UsersController < ApplicationController
 
   def send_reset_password_email
     user = User.find_by_mail(params[:mail]) unless params[:mail].to_s.empty?
-  
+
     if user.nil?
       flash[:message] = "邮件地址未找到，请重新输入!"
     else
