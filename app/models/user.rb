@@ -142,7 +142,7 @@ class User
 
   def create_validate
     validate_presence([:sn, :cn, :login, :mail, :mobile])
-    validate_format({login: /[a-zA-Z0-9]{6,}/, mail: /\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/, mobile: /^\d{11}$/})
+    validate_format({login: /^[a-zA-Z0-9]{6,}$/, mail: /\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/, mobile: /^\d{11}$/})
     validate_password
     validate_uniqueness(["login","mail"])
   end
