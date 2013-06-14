@@ -31,7 +31,7 @@ zh_CN:
             cn:
               blank: 必填项
             login:
-              invalid: 请填写正确的用户名
+              invalid: 请填写正确的用户名，6位以上英文字母，请勿使用中文
               taken: 用户名已经被注册了
             mobile:
               blank: 必填项

@@ -46,14 +46,14 @@ class User
 
   def validate_presence arges
     arges.each do |arge|
-      self.errors[arge] << (I18n.t :simple_form)[:labels][:user][arge].to_s + "不能为空" if self[arge].to_s.empty?
+      self.errors[arge] << (I18n.t :mongoid)[:errors][:models][:user][:attributes][arge][:blank].to_s if self[arge].to_s.empty?
     end
   end
 
   def validate_format arges
     arges.each do |k,v|
       unless self[k].to_s.empty?
-        self.errors[k] << (I18n.t :simple_form)[:labels][:user][k].to_s + "格式不正确" if (self[k].match v).nil?
+        self.errors[k] << (I18n.t :mongoid)[:errors][:models][:user][:attributes][k][:invalid].to_s if (self[k].match v).nil?
       end
     end
   end
