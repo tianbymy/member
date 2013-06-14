@@ -1,7 +1,7 @@
 # config/settings.yml
 defaults: &defaults
   # 域名配置
-  site_host: 'http://www.scscfw.con:90'
+  site_host: 'http://www.scscfw.com:90'
   # 重置密码配置
   password_reset:
     # 过期时间按秒计算
