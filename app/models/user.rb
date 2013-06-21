@@ -21,7 +21,7 @@ class User
   field :mobile
 
   validates :login, format: {with: /[a-zA-Z0-9]{6,}/}
-  validates :mail, format: { with: /\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/ }
+  validates :mail, format: { with: /^([a-z0-9_.-]+)@([\da-z.-]+).([a-z.]{2,6})$/ }
   validates_uniqueness_of :login, :mail
   validates_presence_of :sn, :cn, :login, :mail, :mobile
   validates :mobile, format: {with: /^\d{11}$/}
@@ -142,7 +142,7 @@ class User
 
   def create_validate
     validate_presence([:sn, :cn, :login, :mail, :mobile])
-    validate_format({login: /^[a-zA-Z0-9]{6,}$/, mail: /\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/, mobile: /^\d{11}$/})
+    validate_format({login: /^[a-zA-Z0-9]{6,}$/, mail: /^([a-z0-9_.-]+)@([\da-z.-]+).([a-z.]{2,6})$/, mobile: /^\d{11}$/})
     validate_password
     validate_uniqueness(["login","mail"])
   end

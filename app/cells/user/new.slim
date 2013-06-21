@@ -7,13 +7,13 @@ ul class="nav nav-tabs"
     a href=forgot_password_users_path
       i class="icon-info-sign text-larg text-info"
       span.text-info 忘记密码
-= simple_form_for @user, :html => {:class => 'form-horizontal' } do |f|
+= simple_form_for @user,:validate => true, :html => {:class => 'form-horizontal' } do |f|
   = f.input :login
   = f.input :sn
   = f.input :cn
   = f.input :password
   = f.input :password_confirmation
-  = f.input :mail
+  = f.input :mail,as: :email
   = f.input :mobile
   .controls
     = f.button :submit,:value => "注 册", :class => "btn btn-primary"

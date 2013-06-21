@@ -28,23 +28,30 @@ zh_CN:
           attributes:
             sn:
               blank: 必填项
+              presence: 必填项
             cn:
               blank: 必填项
+              presence: 必填项
             login:
               invalid: 请填写正确的用户名，6位以上英文字母，请勿使用中文
               taken: 用户名已经被注册了
+              presence: 必填项
             mobile:
               blank: 必填项
               invalid: 请填写正确的联系电话
+              presence: 必填项
             mail:
               blank: 必填项
               invalid: 请填写正确的邮箱格式 如： example@163.com
               taken: 此邮箱已经被注册了
+              presence: 必填项
             password:
               blank: 必填项
               confirmation: 确认密码与密码输入不一致
+              presence: 必填项
             password_confirmation:
               blank: 必填项
+              presence: 必填项
         article:
           attributes:
             name:
