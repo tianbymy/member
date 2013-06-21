@@ -48,6 +48,7 @@ zh_CN:
             password:
               blank: 必填项
               confirmation: 确认密码与密码输入不一致
+              invalid: 请填写正确的密码，6位字符以上
               presence: 必填项
             password_confirmation:
               blank: 必填项

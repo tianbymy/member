@@ -17,13 +17,17 @@ class User
   field :sn
   field :cn
   field :name
+  field :password
+  field :password_confirmation
   field :mail
   field :mobile
 
-  validates :login, format: {with: /[a-zA-Z0-9]{6,}/}
+  validates :login, format: {with: /[a-zA-Z0-9_.-]{6,}/}
+  validates :password, format: {with: /[a-zA-Z0-9]{6,}/}
   validates :mail, format: { with: /^([a-z0-9_.-]+)@([\da-z.-]+).([a-z.]{2,6})$/ }
   validates_uniqueness_of :login, :mail
   validates_presence_of :sn, :cn, :login, :mail, :mobile
+  validates_confirmation_of :password
   validates :mobile, format: {with: /^\d{11}$/}
 
   state_machine :state, initial: :unregistered do
@@ -142,7 +146,7 @@ class User
 
   def create_validate
     validate_presence([:sn, :cn, :login, :mail, :mobile])
-    validate_format({login: /^[a-zA-Z0-9]{6,}$/, mail: /^([a-z0-9_.-]+)@([\da-z.-]+).([a-z.]{2,6})$/, mobile: /^\d{11}$/})
+    validate_format({login: /^[a-zA-Z0-9_.-]{6,}$/, mail: /^([a-z0-9_.-]+)@([\da-z.-]+).([a-z.]{2,6})$/, mobile: /^\d{11}$/})
     validate_password
     validate_uniqueness(["login","mail"])
   end
