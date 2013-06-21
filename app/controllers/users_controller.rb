@@ -20,6 +20,10 @@ class UsersController < ApplicationController
     end
   end
 
+  def new_sucess
+
+  end
+
   def search
     @users = User.where_ldap({:displayName => "*#{params[:q]}*", :uid => "*#{params[:q]}*"}) if params[:q]
   end
