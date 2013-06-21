@@ -93,8 +93,12 @@ class UsersController < ApplicationController
     if user.nil?
       flash[:message] = "邮件地址未找到，请重新输入!"
     else
-      User.send_password_reset user
-      flash[:message] = "重置密码邮件以发送，请注意查收!"
+      if user.login == params[:login]
+        User.send_password_reset user
+        flash[:message] = "重置密码邮件以发送，请注意查收!"
+      else
+        flash[:message] = "用户名和邮箱不匹配，请重新输入!"
+      end
     end
     redirect_to forgot_password_users_path
   end
