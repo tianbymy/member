@@ -20,7 +20,7 @@ class UsersController < ApplicationController
     end
   end
 
-  def new_sucess
+  def new_success
 
   end
 

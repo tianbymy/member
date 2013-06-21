@@ -1,5 +1,6 @@
 Member::Application.routes.draw do
   match "/users/register" => "users#new"
+  match "/users/register_success" =>"users#new_success"
   resources :users do
 
     collection do
