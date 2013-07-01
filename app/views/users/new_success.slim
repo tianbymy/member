@@ -4,7 +4,11 @@
     .alert.alert-success style="padding:25px 10px"
       i.icon-ok.text-large.margin-right5
       | 尊敬的用户，您已注册成功！请登录注册邮箱查看详细信息，并牢记您的密码。
-    p 你可以访问：
+      br
+      - unless @adress.to_s.empty?
+        | 还有
+        span id="time" 5
+        | 秒页面将自动跳转
     p style="text-indent:1em;"
       i.icon-caret-right
       a.margin-right5 href="http://www.scscfw.com" target="_blank" 四川生产服务网      
@@ -14,3 +18,14 @@
   .span5
     <iframe width="310" height="400" class="share_self" frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=310&height=400&fansRow=1&ptype=1&speed=0&skin=1&isTitle=1&noborder=1&isWeibo=1&isFans=1&uid=3375081794&verifier=8f95ab31&dpc=1"></iframe>
   .span1
+  input id="redirct_adress" type="hidden" value=@adress.to_s
+- unless @adress.to_s.empty?
+  javascript:
+    $(function () {
+      setTimeout(function () {
+        window.location.href=$("#redirct_adress").attr("value");
+      }, 5000);
+      setInterval(function() {
+        $("#time").text((parseInt($("#time").text()) - 1));
+      },1000);
+    }) 

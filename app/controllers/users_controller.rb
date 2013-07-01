@@ -21,7 +21,7 @@ class UsersController < ApplicationController
   end
 
   def new_success
-
+    @adress = session[:Referer] unless session[:Referer].to_s.empty?
   end
 
   def search
@@ -32,12 +32,7 @@ class UsersController < ApplicationController
     @user = User.new(params[:user])
     if @user.create_ldap
       Resque.enqueue(Email,"四川生产服务网-用户注册信息",Email.to_html("new_register",params[:user]),@user.mail)
-      flash[:notice] = "注册成功"
-      if session[:Referer]
-        redirect_to session[:Referer]
-      else
-        redirect_to Settings.register_redirect
-      end
+      redirect_to users_register_success_path
     else
       render :new
     end
